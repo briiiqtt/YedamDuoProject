@@ -1,0 +1,137 @@
+<!doctype html>
+<!-- Website Template by freewebsitetemplates.com -->
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Admin Page</title>
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="icon" href="favicon.ico">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/mobile.css" media="screen and (max-width : 568px)">
+	<script type="text/javascript" src="js/mobile.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+	<script src="js/top_bar.js"></script>
+	<script src="./jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+	<div id="header">
+		<div id="userInfo"></div>
+		<a href="index.html" class="logo">
+			<img src="images/logo.jpg" alt="">
+		</a>
+		<ul id="navigation">
+			<li>
+				<a href="index.html">home</a>
+			</li>
+			<li>
+				<a href="gallery.html">gallery</a>
+			</li>
+			<li>
+				<a href="epilogue.html">epilogue</a>
+			</li>
+			<li>
+				<a href="contact.html">contact</a>
+			</li>
+		</ul>
+	</div>
+	<div id="body">
+		<script>
+		
+		// 범수씨가 만든 쿠키에서 정보 받아오는거
+		for (let cookies of cookieString) {
+			if (cookies.split("=")[0] == "memberID") {
+				memberID = cookies.split("=")[1];
+				console.log("로그인 아이디: " + memberID);
+			}
+			if (cookies.split("=")[0] == "memberName") {
+				memberName = cookies.split("=")[1];
+				console.log("이름: " + memberName);
+			}
+			if (cookies.split("=")[0] == "memberEMail") {
+				memberEMail = cookies.split("=")[1];
+				console.log("이메일: " + memberEMail);
+			}
+		}
+		
+		// 관리자 로그인 없이 주소치고 들어오면 홈페이지로 돌아가도록 함
+		if (memberID == "admin") {
+			adminpage() ;
+		} else {
+			alert("관리자 전용 페이지입니다.")
+			location.href="index.html"
+		}
+
+		// 회원 목록 보여주는 function
+		function memberlist() {
+			$.ajax({
+				url : "../memberServlet" ,
+				type : "get" ,
+				dataType : "json" ,
+				success : function (result) {
+					console.log(result) ;
+					for (let row of result) {
+						if ($("#membertd").html() == row.memberID) {
+							return ;
+						}
+						$("#memberlisttable").append($("<tr id='memberlisttr'/>")
+								.append($("<td class='memberlisttitle'/>").html("아이디 : ") ,
+										$("<td id='membertd' class='memberlistcontents'/>").html(row.memberID) ,
+										$("<td class='memberlisttitle'/>").html("이름 : ") ,
+										$("<td class='memberlistcontents'/>").html(row.memberName) ,
+										$("<td class='memberlisttitle'/>").html("이메일 : ") ,
+										$("<td class='memberlistcontents'/>").html(row.memberEMail)))
+					}
+				} ,
+				error : function (reject) {
+					console.log(reject) ;
+				}
+			}) ;
+		}
+		
+		// 관리자화면 뿌려주는 function
+		function adminpage () {
+			$("#body").append(
+				$("<h1 />").append($("<span />").html("ADMIN PAGE")) ,
+				$("<div />").addClass("article").append($("<img width='300px' src='../img2/admin.png'>")) ,
+				$("<div />").addClass("article")
+				.append($("<table style='margin: auto;'/>")
+					.append($("<tr />")
+						.append($("<td />").append($("<h4 style='margin:0 auto;'/>").html("회원목록열람")) ,
+								$("<td />").append($("<button id='memberBtn' onclick='memberlist()' />").addClass("bi-book-fill me-1"))))) ,
+				$("<div />").addClass("article")
+				.append($("<table  id='memberlisttable' style='margin: auto;'/>")) ,	
+				$("<div />").addClass("article")
+				.append($("<table style='margin: auto;'/>")	
+					.append($("<tr />")			
+						.append($("<td />").append($("<h4 style='margin:0 auto;'/>").html("상품추가")) , 
+								$("<td />").append($('<button id="productInputBtn" onclick=' + 'location.href="productUpload.html" />').addClass("bi-plus me-1")))))
+			) ;
+		
+		}
+		
+		</script>
+	</div>
+	<div id="footer">
+		<div>
+			<p>&copy; 2023 by KIM & HEO. All rights reserved.</p>
+			<ul>
+				<li>
+					<a href="https://twitter.com/" id="twitter">twitter</a>
+				</li>
+				<li>
+					<a href="https://www.facebook.com/" id="facebook">facebook</a>
+				</li>
+				<li>
+					<a href="https://www.google.com/" id="googleplus">google</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+
+</body>
+
+</html>

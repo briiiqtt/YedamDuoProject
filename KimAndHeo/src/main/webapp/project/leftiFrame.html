@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" id="htmll">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            text-align: center;
+            text-decoration: none;
+            color: white;
+        }
+
+        img {
+            width: 90%;
+            border-radius: 15px;
+        }
+
+        .below {
+            margin-bottom: 30px;
+        }
+
+        .below>span:nth-of-type(1) {
+            position: relative;
+            left: -10%;
+        }
+
+        .below>span:nth-of-type(2) {
+            position: relative;
+            left: 10%;
+            color: red
+        }
+    </style>
+</head>
+
+<body>
+    <div id="showList"></div>
+
+    <script>
+        // let imgSources = ["../img/gray/gray.jpg", "../img/hood/hood_main.jpg", "../img/horse/horse.jpg",
+        //     "../img/leather/leather.jpg",
+        //     "../img/loaf/loaf.jpg", "../img/shoe/conv.jpg", "../img/yasang/yasang.jpg"
+        // ]
+        let showList = document.getElementById('showList');
+
+        let xhr = new XMLHttpRequest();
+        xhr.open('post', '../productServlet');
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.send('cmd=listAll');
+        xhr.onload = function () {
+            console.log('온로드');
+            let data = JSON.parse(xhr.responseText);
+            //console.log(data);
+
+            for (let i = 0; i < data.length; i++) {
+                let divRow = document.createElement('div');
+                let div = document.createElement('div');
+                divRow.appendChild(div);
+                let img = document.createElement('img');
+                img.src = "../img2/"+data[i].filename;
+                div.appendChild(img);
+                div.onclick = function () {
+                    // parent.document.location.href = "gallery.html?hi=0/bye=1"
+                    parent.document.rightiFrame.location.href = "productInfo.html?cmd=list&productID="+data[i].id;
+                }
+                //<< 가격이랑 좋아요부분
+                let span;
+                let innerDiv = document.createElement('div');
+                innerDiv.setAttribute('class', 'below')
+                div.appendChild(innerDiv);
+                
+                span = document.createElement('span');
+                span.innerHTML = /*"<del>₩ " + data[i].originprice +"</del>"+*/" ₩ "+data[i].offprice;
+                innerDiv.appendChild(span);
+                
+                span = document.createElement('span');
+                span.innerHTML = "❤ " + data[i].likeit;
+                innerDiv.appendChild(span);
+
+                span = document.createElement('span');
+                span.innerHTML = "<br>"+data[i].brand;
+                innerDiv.appendChild(span);
+
+                //>>
+
+
+                showList.appendChild(div);
+
+
+            }
+        }
+    </script>
+    <!-- <script>
+        // let imgSources = ["../img/gray/gray.jpg", "../img/hood/hood_main.jpg", "../img/horse/horse.jpg",
+        //     "../img/leather/leather.jpg",
+        //     "../img/loaf/loaf.jpg", "../img/shoe/conv.jpg", "../img/yasang/yasang.jpg"
+        // ]
+        let imgSources = [];
+        let showList = document.getElementById('showList');
+
+        let xhr = new XMLHttpRequest();
+        xhr.open('post','../productServlet');
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.send('cmd=listAll');
+        xhr.onload = function(){
+            console.log('온로드');
+            let data = JSON.parse(xhr.responseText);
+            //console.log(data);
+            for(let i=0; i<data.length; i++){
+            	console.log('111')
+            	imgSources.push("../img2/"+data[i].filename);
+            	console.log(imgSources)
+            }
+            
+        for (let i = 0; i < imgSources.length; i++) {
+            let divRow = document.createElement('div');
+            let div = document.createElement('div');
+            divRow.appendChild(div);
+            let img = document.createElement('img');
+            img.src = imgSources[i];
+            div.appendChild(img);
+            div.onclick = function () {
+                // parent.document.location.href = "gallery.html?hi=0/bye=1"
+                parent.document.rightiFrame.location.href = "productInfo.html"
+            }
+            //<< 가격이랑 좋아요부분
+            let innerDiv = document.createElement('div');
+            innerDiv.setAttribute('class', 'below')
+            div.appendChild(innerDiv);
+
+            let span = document.createElement('span');
+            let price = "78,000"; // 가격
+            span.innerHTML = "₩" + price;
+            innerDiv.appendChild(span);
+
+            span = document.createElement('span');
+            let likeIt = 3; // 좋아요
+            span.innerHTML = "❤" + likeIt;
+            innerDiv.appendChild(span);
+
+            //>>
+
+
+            showList.appendChild(div);
+
+
+        }}
+    </script> -->
+</body>
+
+</html>

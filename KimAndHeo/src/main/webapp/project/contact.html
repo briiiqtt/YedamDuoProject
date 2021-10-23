@@ -1,0 +1,88 @@
+<!doctype html>
+<!-- Website Template by freewebsitetemplates.com -->
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Contact</title>
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="icon" href="favicon.ico">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/mobile.css" media="screen and (max-width : 568px)">
+	<script type="text/javascript" src="js/mobile.js"></script>
+	<script src="js/top_bar.js"></script>
+	<script src="./jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+	<div id="header">
+		<div id="userInfo"></div>
+		<a href="index.html" class="logo">
+			<img src="images/logo.jpg" alt="">
+		</a>
+		<ul id="navigation">
+			<li>
+				<a href="index.html">home</a>
+			</li>
+			<li>
+				<a href="gallery.html">gallery</a>
+			</li>
+			<li>
+				<a href="epilogue.html">epilogue</a>
+			</li>
+			<li class="selected">
+				<a href="contact.html">contact</a>
+			</li>
+		</ul>
+	</div>
+	<div id="body" style='height:24cm;'>
+		<script>
+		
+			// 관리자화면 보여주기
+			$("#body").append(
+				$("<h1 />").append($("<span />").html("let's keep in touch")) ,
+				$("<form action='contact.html'>")
+					.append($("<table style='margin: auto;'/>")
+						.append($("<tr />")
+							.append($("<td />")
+								.append($("<div name='fname' id='fname' />").html("mustacchino"))) ,
+						$("<tr />")
+							.append($("<td />")
+								.append($("<div type='text' name='address' id='address' />").html("경기도 성남시 분당수 분당내곡로 117, 8층"))) , 
+						$("<tr />")	
+							.append($("<td />")
+								.append($("<div type='text' name='regNum' id='regNum' />").html("사업자등록번호 : 570-88-01618"))) ,
+						$("<tr />")
+							.append($("<td />")
+								.append($("<div type='text' name='phone' id='phone' />").html("고객센터 1588-7813"))) ,
+						$("<tr />")
+							.append($("<td />")
+								.append($("<div name='message' id='message' />").html("mustacchino는 통신판매 중개자로서 통신판매의 당사자가 아니므로 개별 판매자가 등록한 상품정보에 대하여 책임을 지지 않습니다. 단, 거래과정에서 검수하고 보증하는 내용에 대한 책임은 당사에 있습니다.")))
+								) 
+				)
+			) ;
+
+		</script>
+	</div>
+	<div id="footer">
+		<div>
+			<p>&copy; 2023 by KIM & HEO. All rights reserved.</p>
+			<ul>
+				<li>
+					<a href="https://twitter.com/" id="twitter">twitter</a>
+				</li>
+				<li>
+					<a href="https://www.facebook.com/" id="facebook">facebook</a>
+				</li>
+				<li>
+					<a href="https://www.google.com/" id="googleplus">google</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+
+</body>
+
+</html>

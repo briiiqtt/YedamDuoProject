@@ -1,0 +1,96 @@
+<!doctype html>
+<!-- Website Template by freewebsitetemplates.com -->
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Register</title>
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="icon" href="favicon.ico">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/mobile.css" media="screen and (max-width : 568px)">
+	<script type="text/javascript" src="js/mobile.js"></script>
+	<script src="../project/js/resetInput.js"></script>
+	<script src="js/top_bar.js"></script>
+</head>
+
+<script>
+	function registerButtonPressed(){
+		console.log('등록버튼눌림');
+		let memberID = document.regForm.memberID.value;
+		let memberPW = document.regForm.memberPW.value;
+		let memberName = document.regForm.memberName.value;
+		let memberEMail = document.regForm.memberEMail.value;
+		if (memberID == "" || memberID == "ID") {
+			window.alert("등록할 ID를 입력하십시오.");
+			document.loginForm.memberID.focus();
+			return;
+		}
+		if (memberPW == "" || memberPW == "PASSWORD") {
+			window.alert("등록할 PASSWORD를 입력하십시오.");
+			document.loginForm.memberPW.focus();
+			return;
+		}
+		if (memberName == "" || memberName == "NAME") {
+			window.alert("당신의 이름을 입력하십시오.");
+			document.loginForm.memberPW.focus();
+			return;
+		}
+		if (memberEMail == "" || memberEMail == "EMAIL") {
+			window.alert("등록할 EMAIL을 입력하십시오.");
+			document.loginForm.memberPW.focus();
+			return;
+		}
+		let xhr = new XMLHttpRequest();
+		xhr.open('post','../RegisterServlet');
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.send('memberID=' + memberID + '&memberPW=' + memberPW + '&memberName=' + memberName + '&memberEMail=' + memberEMail);
+		xhr.onload = function(){
+			let result = xhr.responseText
+			if (result < 0){
+				alert('등록실패: SQL EXCEPTION');
+			} else{
+				alert('환영합니다! 등록하신 ID로 로그인해주세요.')
+				document.location.href="index.html";
+			}
+		}
+	}
+</script>
+
+<body>
+	<div id="header">
+		<div id="userInfo"></div>
+		<a href="index.html" class="logo">
+			<img src="images/logo.jpg" alt="">
+		</a>
+	</div>
+	<div id="body">
+		<h1><span>welcome!</span></h1>
+		<form action="" name="regForm" id="regForm">
+			<input type="text" name="memberID" id="memberID" value="ID">
+			<input type="password" name="memberPW" id="memberPW" value="PASSWORD">
+			<input type="text" name="memberName" id="memberName" value="NAME">
+			<input type="email" name="memberEMail" id="memberEMail" value="EMAIL">
+			<br><button type="button" onclick="registerButtonPressed()" id="send">REGISTER</button>
+		</form>
+	</div>
+	<div id="footer">
+		<div>
+			<p>&copy; 2023 by KIM & HEO. All rights reserved.</p>
+			<ul>
+				<li>
+					<a href="https://twitter.com/" id="twitter">twitter</a>
+				</li>
+				<li>
+					<a href="https://www.facebook.com/" id="facebook">facebook</a>
+				</li>
+				<li>
+					<a href="https://www.google.com/" id="google">google</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</body>
+
+</html>

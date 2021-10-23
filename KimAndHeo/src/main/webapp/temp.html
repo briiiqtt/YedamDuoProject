@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<script src="./jquery-3.6.0.min.js"></script>
+<head>
+    <style>
+        .make_heart {
+            margin: 0 auto;
+            width: 5px;
+            height: 5px;
+            background: white;
+            position: relative;
+            transform: rotate(45deg);
+        }
+
+        .make_heart:before,
+        .make_heart:after {
+            content: "";
+            width: 5px;
+            height: 5px;
+            position: absolute;
+            border-radius: 50%;
+            background: white;
+        }
+
+        .make_heart:before {
+            left: -57%;
+        }
+
+        .make_heart:after {
+            top: -57%;
+        }
+
+        .go {
+            transform: translate(0px, -100px) rotate(45deg) scale(10,10);;
+            transition-property: all;
+            transition-duration: .25s;
+            background: red;
+        }
+        .go::after,
+        .go::before{
+            background: red;
+        }
+        /* .go:before {
+            width: 100px;
+            height: 100px;
+        }
+        .go::after {
+            width: 100px;
+            height: 100px;
+        } */
+
+        .comeback {
+            transform: translate(0px, 0px) rotate(45deg);
+            transition-property: all;
+            /* transition-duration: 0s; */
+            background: white;
+        }
+        .comeback::after,
+        .comeback::before{
+            background: white;
+        }
+    </style>
+</head>
+
+<body>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <h4>awdawd<div id="make_heart" class="make_heart"></div></h4>
+    <button onclick="go()">좋아요</button>
+
+    <script>
+        // let like = 0;
+        function go() {
+            // if (like == 0) {
+                document.getElementById('make_heart').classList.remove('comeback');
+                document.getElementById('make_heart').classList.add('go');
+                setTimeout(comeback, 800)
+                // like = 1;
+            // } else {
+            //     document.getElementById('make_heart').classList.remove('go');
+            //     document.getElementById('make_heart').classList.add('comeback');
+            //     like = 0;
+            // }
+
+        }
+
+        function comeback(){
+            document.getElementById('make_heart').classList.remove('go');
+            document.getElementById('make_heart').classList.add('comeback');
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,93 @@
+<!doctype html>
+<!-- Website Template by freewebsitetemplates.com -->
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Login</title>
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="icon" href="favicon.ico">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/mobile.css" media="screen and (max-width : 568px)">
+	<script type="text/javascript" src="js/mobile.js"></script>
+	<script src="../project/js/top_bar.js"></script>
+	<script src="../project/js/resetInput.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+
+<script>
+
+	function loginButtonPressed() {
+		console.log('로그인버튼눌림');
+		let memberID = document.loginForm.memberID.value;
+		let memberPW = document.loginForm.memberPW.value;
+		if (memberID == "" || memberID == "ID") {
+			window.alert("ID를 입력하십시오.");
+			document.loginForm.memberID.focus();
+			return;
+		}
+		if (memberPW == "" || memberPW == "PASSWORD") {
+			window.alert("PASSWORD를 입력하십시오.");
+			document.loginForm.memberPW.focus();
+			return;
+		}
+		let xhr = new XMLHttpRequest();
+		xhr.open('post', '../LoginServlet');
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.send('cmd=login;&memberID=' + memberID + '&memberPW=' + memberPW);
+		xhr.onload = function () {
+			console.log('request onload');
+			console.log(document.cookie);
+			if(xhr.responseText == 0){
+				console.log('쿼리 결과 없음');
+				alert('없는 아이디이거나 비밀번호가 틀렸습니다.')
+			} else {
+				console.log(xhr.responseText);
+				
+				document.cookie = 'memberID='+xhr.responseText.split("&")[0];
+				document.cookie = 'memberName='+xhr.responseText.split("&")[1];
+				document.cookie = 'memberEMail='+xhr.responseText.split("&")[2];
+				document.location.href = "index.html";
+			}
+			console.log(document.cookie);
+		}
+	}
+</script>
+
+
+
+<body>
+	<div id="header">
+		<div id="userInfo"></div>
+		<a href="index.html" class="logo">
+			<img src="images/logo.jpg" alt="">
+		</a>
+	</div>
+	<div id="body">
+		<h1><span>who are you?</span></h1>
+		<form action="" name="loginForm" id="loginForm">
+			<input type="text" name="memberID" id="memberID" value="ID">
+			<input type="password" name="memberPW" id="memberPW" value="PASSWORD">
+			<br><button type="button"onclick="loginButtonPressed()" id="send">LOG-IN</button>
+		</form>
+	</div>
+	<div id="footer">
+		<div>
+			<p>&copy; 2023 by KIM & HEO. All rights reserved.</p>
+			<ul>
+				<li>
+					<a href="https://twitter.com/" id="twitter">twitter</a>
+				</li>
+				<li>
+					<a href="https://www.facebook.com/" id="facebook">facebook</a>
+				</li>
+				<li>
+					<a href="https://www.google.com/" id="google">google</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Cart</title>
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="icon" href="favicon.ico">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/mobile.css" media="screen and (max-width : 568px)">
+	<script type="text/javascript" src="js/mobile.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+	<script src="./jquery-3.6.0.min.js"></script>
+	<script src="js/top_bar.js"></script>
+</head>
+<body>
+	<div id="header">
+		<div id="userInfo"></div>
+		<a href="index.html" class="logo">
+			<img src="images/logo.jpg" alt="">
+		</a>
+		<ul id="navigation">
+			<li>
+				<a href="index.html">home</a>
+			</li>
+			<li>
+				<a href="gallery.html">gallery</a>
+			</li>
+			<li>
+				<a href="epilogue.html">epilogue</a>
+			</li>
+			<li>
+				<a href="contact.html">contact</a>
+			</li>
+		</ul>
+	</div>
+	<div id="first">
+	</div>
+	<div id="body">
+	</div>
+	<div id="last">
+	</div>
+	
+	<script>
+	
+		// 장바구니 타이틀 표시
+		$("#first").append($("<div />").addClass("row")
+				.append($("<dic />").addClass("article")
+						.append($("<h4 />").html("  장바구니").addClass("bi-cart-fill me-1")))) ;	
+		
+		// 장바구니 요청 ajax
+		$.ajax({
+			url : "../cartServlet?cmd=list" ,
+			type : "get" ,
+			dataType : "json" ,
+			success : function (result) {
+				console.log(result) ;
+				for (let row of result) {
+					$("#body").append(createDiv(row)) ;
+				}
+			} ,
+			error : function (reject) {
+				console.log(reject) ;
+			}
+		}) ;
+
+		// 장바구니 화면에 표시
+		function createDiv(row) {
+			let divRow = $("<div id=" + row.id + ">").addClass("row") ;
+			$(divRow).append(
+				$("<div />").html("<img width='200px' src='../img2/" + row.img + "'>") ,
+				$("<div />").addClass("article")
+				.append($("<table style='margin: auto;'/>")
+					.append($("<tr />")
+						.append($("<td />").append($("<h4 />").html("제품명")) , 
+								$("<td colspan='5' />").append($("<h4 />").html(row.name)))) ,
+				$("<div />").addClass("article")
+					.append($("<table style='margin: auto;'/>")
+						.append($("<tr />")
+							.append($("<td />").append($("<h4 />").html("주문번호")) ,
+									$("<td />").append($("<h4 id='cartid'/>").html(row.id)) ,
+									$("<td />").append($("<h4 />").html("사이즈")) , 
+									$("<td />").append($("<h4 />").html(row.psize))))) ,
+				$("<div />").addClass("article")
+					.append($("<table style='margin: auto;'/>")
+						.append($("<tr />")
+							.append($("<td />").append($("<h4 />").html("가격")) , 
+									$("<td />").append($("<h4 />").html(row.price)) ,
+									$("<td />").append($("<h4 />").html("X")) ,
+									$("<td />").append($("<h4 />").html("수량")) , 
+									$("<td />").append($("<h4 />").html(row.count)) ,
+									$("<td />").append($("<h4 />").html("+")) ,
+									$("<td />").append($("<h4 />").html("배송비")) , 
+									$("<td />").append($("<h4 />").html(row.deliveryfee)))))) ,
+				$("<div />").addClass("article")
+				.append($("<table style='margin: auto;'/>")
+					.append($("<tr />")
+						.append($("<td />").append($("<h4 />").html("결제금액")) ,
+								$("<h4 id='finalpay'/>").html((row.price * row.count) + row.deliveryfee)))) ,
+				$("<div />").addClass("article").append($("<button id='delBtn' onclick='del(" + row.id + ")' />").html("삭제"))
+			) ;
+			
+			return divRow ;
+		}
+
+		// 최종금액 function
+		function finalprice () {
+ 		$.ajax({
+			url : "../cartServlet?cmd=final" ,
+			type : "get" ,
+			dataType : "json" ,
+			success : function (result) {
+				console.log(result) ;
+				let price = 0 ;
+ 				for (let row of result) {
+ 					price += (row.price * row.count) + row.deliveryfee ;
+				} 
+					$("#finalfinalpay").html(price) ; 						
+			} ,
+			error : function (reject) {
+				console.log(reject) ;
+			}
+		}) ; 
+		}
+		
+		finalprice() ;
+ 		
+ 		// 최종결제금액 화면에 표시
+		$("#last").append($("<div />").addClass("row")
+					.append($("<table style='margin: auto;'/>")
+						.append($("<tr />")
+							.append($("<td />").append($("<h4 />").html("최종결제금액 : ")) ,
+									$("<td />").append($("<h4 id='finalfinalpay'/>")))) ,
+					$("<div />").addClass("article")
+						.append($("<button id='buyBtn' onclick='buyBtn()' />").html("  구매하기").addClass("bi-currency-dollar")) ,
+					$("<div style='height:1cm'/>").addClass("article") ,
+					$("<div />").addClass("article")
+						.append($('<button id="gobuy" onclick=' + 'location.href="gallery.html" />')
+								.html("  계속 쇼핑하기").addClass("bi-cart-fill me-1") ,
+						$('<button id="gowrite" onclick=' + 'location.href="epilogue.html" />')
+								.html("  이용후기 남기기").addClass("bi-pencil-fill")
+					))) ;
+		
+		
+		// 삭제버튼 function
+		function del(deleteid) {
+			let id = deleteid ;
+			
+			var returnValue = confirm("삭제하시겠습니까?") ;
+			if (returnValue == false) {
+				alert("취소하셨습니다") ;	
+				return ;
+			}
+			alert("삭제하셨습니다") ;
+			
+			$.ajax({
+				url : "../cartServlet?cmd=del" ,
+				type : "get" ,
+				data : {
+					id : id
+				} ,
+				dataType : "json" ,
+				success : function (result) {
+					console.log(result) ;
+					$("#"+deleteid).remove() ;
+					finalprice() ;
+				} ,
+				error : function (reject) {
+					console.log(reject) ;
+				}
+			}) ;
+		}
+		
+		// 구매하기버튼 function
+		function buyBtn() {
+			var returnValue = confirm("구매하시겠습니까?") ;
+			if (returnValue == false) {
+				alert("취소하셨습니다") ;	
+				return ;
+			}
+			alert("구매완료") ;
+			
+			$.ajax({
+				url : "../cartServlet?cmd=buy" ,
+				type : "get" ,
+				success : function (result) {
+					console.log(result) ;
+					$("#body").remove() ;
+					finalprice() ;
+				} ,
+				error : function (reject) {
+					console.log(reject) ;
+				}
+			})
+		}
+		
+	</script>
+	
+	<div id="footer">
+		<div>
+			<p>&copy; 2023 by KIM & HEO. All rights reserved.</p>
+			<ul>
+				<li>
+					<a href="https://twitter.com/" id="twitter">twitter</a>
+				</li>
+				<li>
+					<a href="https://www.facebook.com/" id="facebook">facebook</a>
+				</li>
+				<li>
+					<a href="https://www.google.com/" id="googleplus">google</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

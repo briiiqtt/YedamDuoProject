@@ -1,0 +1,84 @@
+<!doctype html>
+<!-- Website Template by freewebsitetemplates.com -->
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Gallery</title>
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="icon" href="favicon.ico">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/mobile.css" media="screen and (max-width : 568px)">
+	<script type="text/javascript" src="js/mobile.js"></script>
+	<script src="js/top_bar.js"></script>
+</head>
+
+<script language="javascript">  //FIXME: 이거 뭔지 기억이 안남
+	temp = location.href.split("?");
+	data = temp[1];
+	console.log(data)
+</script>
+
+
+<body>
+	<div id="header">
+		<div id="userInfo"></div>
+		<a href="index.html" class="logo">
+			<img src="images/logo.jpg" alt="">
+		</a>
+		<ul id="navigation">
+			<li>
+				<a href="index.html">home</a>
+			</li>
+			<li class="selected">
+				<a href="gallery.html">gallery</a>
+			</li>
+			<li>
+				<a href="epilogue.html">epilogue</a>
+			</li>
+			<li>
+				<a href="contact.html">contact</a>
+			</li>
+			<!-- <li>
+				<a href="contact.html">[관리자]상품등록</a>
+			</li> -->
+		</ul>
+	</div>
+
+	<div id="body" class="goodsList">
+		<!-- <div><h1><span></span></h1></div> -->
+		<!-- <button>left</button> -->
+		<div id="leftiFrameDiv">
+			<div style="display: flex; position: relative; left: 3%;">
+				<!-- <button>aa</button><button>aa</button> -->
+			</div>
+			<iframe id="leftiFrame" name="leftiFrame" src="leftiFrame.html" frameborder="0" width="20%"
+				height="900px"></iframe>
+		</div>
+
+		<div id="rightiFrameDiv">
+			<iframe id="rightiFrame" name="rightiFrame" src="" frameborder="0" width="77%" height="900px"></iframe>
+		</div>
+
+
+	</div>
+	<div id="footer">
+		<div>
+			<p>&copy; 2023 by KIM & HEO. All rights reserved.</p>
+			<ul>
+				<li>
+					<a href="https://twitter.com/" id="twitter">twitter</a>
+				</li>
+				<li>
+					<a href="https://www.facebook.com/" id="facebook">facebook</a>
+				</li>
+				<li>
+					<a href="https://www.google.com/" id="googleplus">google</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</body>
+
+</html>
