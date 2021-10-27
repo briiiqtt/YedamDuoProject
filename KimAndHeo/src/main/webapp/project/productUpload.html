@@ -15,8 +15,29 @@
 	<script src="js/resetInput.js"></script>
 	<script src="js/top_bar.js"></script>
 </head>
-<script>
+<style>
+	input.notInputting {
+		border: 2px solid #252525;
+	}
 
+	input.Inputting {
+		border: 10px solid black;
+	}
+</style>
+<script>
+	function inputting(thisTag) {
+		console.log(thisTag);
+		thisTag.setAttribute('class', 'Inputting');
+		setInterval(() => {
+			notInpuuting(thisTag)
+		}, 200);
+	}
+
+	function notInpuuting(thisTag) {
+		thisTag.setAttribute('class', 'notInputting');
+	}
+</script>
+<script>
 	//범수씨가 만든 쿠키에서 정보 받아오는거
 	for (let cookies of cookieString) {
 		if (cookies.split("=")[0] == "memberID") {
@@ -32,69 +53,67 @@
 			console.log("이메일: " + memberEMail);
 		}
 	}
-	
+
 	//관리자 로그인 없이 주소치고 들어오면 홈페이지로 돌아가도록 함
-	if (memberID == "admin") {
-		
-	} else {
+	if (memberID != "admin") {
 		alert("관리자 전용 페이지입니다.")
-		location.href="index.html"
+		location.href = "index.html"
 	}
 
 	function uploadButtonPressed(ev) {
 		console.log('등록버튼눌ㄹ미');
-		// let name = document.loginForm.name.value;
-		// let brand = document.loginForm.brand.value;
-		// let price = document.loginForm.price.value;
-		// // let filename = document.loginForm.filename.value;
-		// if (name == "" || name == "product name") {
-		// 	window.alert("상품이름");
-		// 	document.loginForm.memberID.focus();
-		// 	return;
-		// }
-		// if (brand == "" || brand == "brand") { 
-		// 	window.alert("브랜드");
-		// 	document.loginForm.memberPW.focus();
-		// 	return;
-		// }
-		// if (price == "" || price == "price") { //FIXME: 조건 바꾸기. 문자열이랑 정수랑 비교?
-		// 	window.alert("가격");
-		// 	document.loginForm.memberPW.focus();
-		// 	return;
-		// }
+		ev.preventDefault();
+		let frm = document.getElementById('frm');
+		let data = new FormData(frm);
+
+		let name = document.frm.name.value;
+		let brand = document.frm.brand.value;
+		let originPrice = document.frm.originprice.value;
+		let offPrice = document.frm.offprice.value;
+		if (name == "" || name == "product name") {
+			window.alert("상품이름입력하쇼");
+			document.frm.focus();
+			return;
+		}
+		if (brand == "" || brand == "brand") {
+			window.alert("브랜드입력");
+			document.loginForm.memberPW.focus();
+			return;
+		}
+		if (originPrice == "" || originPrice == "price") {
+			window.alert("가격입력");
+			document.loginForm.memberPW.focus();
+			return;
+		}
+		if (offPrice == "" || offPrice == "price") {
+			window.alert("할인가입력");
+			document.loginForm.memberPW.focus();
+			return;
+		}
 		// let xhr = new XMLHttpRequest();
 		// xhr.setcontet
 		// xhr.open('../ProductUploadServlet');
 		// xhr.setRequestHeader("Content-type", "false");
 		// xhr.send();
-		// xhr.onload = function () {}\
-
-		ev.preventDefault();
-			let frm = document.getElementById('frm');
-			let data = new FormData(frm);
-
-			$.ajax({
-				url: '../ProductUploadServlet',
-				type: $('#frm').attr('method'),
-				data: data,
-				processData: false,
-				contentType: false,
-				dataType: 'json',
-				success: function (result) {
-					alert('등록완료');
-					$('#show').append(createDiv(result));
-					console.log(result);
-
-
-					// 입력했던 값을 지우도록
-					$('#frm>input').not('[type="submit"]').val('');
-
-
-				},
-				error: function () {
-					alert('faillliillillil');
-				}
-			});
+		// xhr.onload = function () {}
+		$.ajax({
+			url: '../ProductUploadServlet',
+			type: $('#frm').attr('method'),
+			data: data,
+			processData: false,
+			contentType: false,
+			dataType: 'json',
+			success: function (result) {
+				alert('등록완료');
+				$('#show').append(createDiv(result));
+				console.log(result);
+				// 입력했던 값을 지우도록
+				// $('#frm>input').not('[type="submit"]').val('');
+			},
+			error: function () {
+				alert('등록실패');
+			}
+		});
 	}
 </script>
 
@@ -121,11 +140,12 @@
 	</div>
 	<div id="body">
 		<h1><span>product upload</span></h1>
-		<form id="frm" method="POST" enctype="multipart/form-data" onsubmit="uploadButtonPressed(event)">
-			<input type="text" name="name" id="" value="product name">
+		<form id="frm" name="frm" method="POST" enctype="multipart/form-data" onsubmit="uploadButtonPressed(event)">
+			<input type="text" name="name" id="name123" value="product name" oninput="inputting(this)">
 			<input type="text" name="brand" id="" value="brand">
 			<input type="text" name="originprice" id="" value="originprice">
 			<input type="text" name="offprice" id="" value="offprice">
+			<input type="text">
 			<input type="file" name="file">
 			<br><input type="submit" onclick="uploadButtonPressed()" id="send" value="판다 이것 !"></input>
 		</form>
